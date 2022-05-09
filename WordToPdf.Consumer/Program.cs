@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using Spire.Doc;
+using System.Net;
 using System.Net.Mail;
 using System.Text;
 using WordToPdf.Consumer;
@@ -32,7 +33,10 @@ static bool EmailSend(string email, MemoryStream memoryStream, string fileName)
         SmtpClient smtpClient = new SmtpClient();
         smtpClient.Host = "mail.teknohub.net";
         smtpClient.Port = 587;
-        smtpClient.Credentials = new System.Net.NetworkCredential("admin@teknohub.net", "Fatih1234");
+        smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
+        smtpClient.Credentials = new NetworkCredential("admin@teknohub.net", "Fatih1234");
+        smtpClient.UseDefaultCredentials = false;
+        smtpClient.EnableSsl = true;
         smtpClient.SendMailAsync(mailMessage);
 
         Console.WriteLine($"Sonuç: {email} adresine gönderilmiştir.");
